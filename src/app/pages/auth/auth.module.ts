@@ -5,11 +5,10 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 
-
 @NgModule({
   declarations: [
     LoginComponent,
-    RegistroComponent
+    RegistroComponent,
   ],
   imports: [
     CommonModule,

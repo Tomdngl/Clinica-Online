@@ -1,1 +1,27 @@
-<p>layout works!</p>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" [routerLink]="['/home']">
+        <img src="../../../assets/favicon.png" alt="Favicon" class="favicon d-inline-block align-text-top"
+          style="height: 40px; padding-right: 10px;">
+        <span class="nombre" *ngIf="usuario">{{usuario?.nombre}}</span>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" routerLinkActive="active" routerLinkActive="router-link-active"
+              [routerLink]="['/home']">Inicio</a>
+          </li>
+          <li class="nav-item dropdown-center" *ngIf="usuario">
+            <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Usuarios</a>
+          </li>
+        </ul>
+          <button class="btn chat-icon"  *ngIf="usuario" (click)="CerrarSesion()">
+            <img src="../../../assets/iconos/cerrar-sesion.png"  width="40" height="40" alt="logout">
+          </button>
+      </div>
+    </div>
+  </nav>
+<section>
+    <ng-content select="router-outlet"></ng-content>
+</section>

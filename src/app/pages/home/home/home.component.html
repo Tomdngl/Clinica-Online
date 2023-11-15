@@ -1,1 +1,19 @@
-<p>home works!</p>
+<div class="background-image">
+    <div class="container">
+        <div class="card text-center flip-in-hor-top" >
+            <h4 class="card-title">CLINICA ONLINE</h4>
+            <p class="card-subtitle">Por Tomás D'Angelo</p>
+            <br>
+            <img class="card-img-top mx-auto" [src]="'/assets/favicon.png'">
+            <div class="card-body">
+                <br>
+                <a class="login-button ingresar-button"  [routerLink]="usuario !== null ? '/home/gestion' : '/auth/login'">
+                    <i class="fas fa-door-open fa-beat"></i>  Ingresar
+                </a>
+                <a class="login-button registrarse-button" [routerLink]="'/auth/registro'">
+                    <i class="fa-solid fa-plus fa-beat"></i>  Registrarse
+                </a>                     
+            </div>            
+        </div>
+    </div>
+</div>
