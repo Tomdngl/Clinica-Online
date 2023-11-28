@@ -41,8 +41,6 @@ ngOnInit() {
       foto:['',Validators.required],
       captcha:['',Validators.required]
     });
-
-    this.captcha = this.GenerarCaptcha(6)
   }
 
   async Registrar() {
@@ -51,7 +49,7 @@ ngOnInit() {
     
     if(this.formEspecialista.valid && this.imagenes.length == 1)
     {
-      if(this.captcha.toLocaleLowerCase().trim() == this.formEspecialista.getRawValue().captcha.toLocaleLowerCase().trim())
+      if(this.captcha != null || '')
       {
         this.loading = true
 
@@ -76,13 +74,16 @@ ngOnInit() {
           this.nuevoEspecialista = new Persona();
         }, 2000);
       }
-      else
-      {
-        this.swal.Error('Error.','¡El captcha es incorrecto!');
-      }
     }
     else {
-      this.swal.Error('Error.','¡Asegurese de completar el formulario correctamente!');
+      if(this.captcha == null || '')
+      {
+        this.swal.Error('Error.','El captcha no ha sido resuelto.');
+      }
+      else
+      {
+        this.swal.Error('Error.','Error en los datos ingresados, reviselos e intente nuevamente.');
+      }
     }
     this.loading = false
   }
@@ -118,19 +119,12 @@ ngOnInit() {
     this.especialidad = $event;
   }
 
-  GenerarCaptcha(num:number) :string
+  resolved(captchaResponse: string)
   {
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let captchaRetorno = ' ';
-    const cantCaracteres = caracteres.length;
-    for (let i = 0; i < num; i++) {
-      captchaRetorno += caracteres.charAt(
-        Math.floor(Math.random() * cantCaracteres)
-      );
-    }
-    return captchaRetorno;
+    this.captcha = captchaResponse
+    console.log("El captcha se resolvio con: " + this.captcha)
   }
-
+  
   volver(): void {
     this.swal.MostrarConfirmacion("Confirmación", "¿Desea cancelar el registro?").then((res) => {
       if(res.isConfirmed){

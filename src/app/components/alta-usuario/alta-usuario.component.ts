@@ -40,14 +40,12 @@ export class AltaUsuarioComponent {
       foto:['',Validators.required],
       captcha:['',Validators.required]
     });
-
-    this.captcha = this.GenerarCaptcha(6)
   }
 
   async Registrar() {
     if(this.formPaciente.valid && this.imagenes.length == 2)
     {
-      if(this.captcha.toLocaleLowerCase().trim() == this.formPaciente.getRawValue().captcha.toLocaleLowerCase().trim())
+      if(this.captcha != null || '')
       {
         this.loading = true
 
@@ -105,17 +103,10 @@ export class AltaUsuarioComponent {
     this.imagenes = [];
   }
 
-  GenerarCaptcha(num:number) :string
+  resolved(captchaResponse: string)
   {
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let captchaRetorno = ' ';
-    const cantCaracteres = caracteres.length;
-    for (let i = 0; i < num; i++) {
-      captchaRetorno += caracteres.charAt(
-        Math.floor(Math.random() * cantCaracteres)
-      );
-    }
-    return captchaRetorno;
+    this.captcha = captchaResponse
+    console.log("El captcha se resolvio con: " + this.captcha)
   }
 
   volver(): void {
