@@ -1,1 +1,61 @@
-<p>login works!</p>
+<div class="background-image">
+    <div class="login-container">
+        <div class="container-form-rapido">
+            <form [formGroup]="formUsuario" class="contenedor-form" (ngSubmit)="Login()">
+                <img src="../../../../assets/login.png" alt="Login" class="img-login" />
+                <div class="card-body">
+                    <h5 class="card-subtitle text-muted text-center">
+                        Ingrese sus credenciales
+                    </h5>
+                    <hr>
+                    <div class="row mb-3 mt-2">
+                        <div class="col-md">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" formControlName="email"
+                                placeholder="Correo Electrónico" />
+                            <small class="mensaje-error"
+                                *ngIf="formUsuario.controls['email'].errors?.['required'] && formUsuario.controls['email'].touched">
+                                *Debe rellenar este campo
+                            </small>
+                            <small class="mensaje-error"
+                                *ngIf="formUsuario.controls['email'].errors?.['email'] && formUsuario.controls['email'].touched">
+                                *El correo es inválido
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row mb-3 mt-2">
+                        <div class="col-md">
+                            <label for="clave" class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="clave" formControlName="clave"
+                                placeholder="Contraseña" />
+                            <small class="mensaje-error" *ngIf="
+                            formUsuario.controls['clave'].errors?.['required'] &&
+                            formUsuario.controls['clave'].touched
+                          ">
+                                *Debe rellenar este campo
+                            </small>
+                            <small class="mensaje-error" *ngIf="
+                            formUsuario.controls['clave'].errors?.['minlength'] &&
+                            formUsuario.controls['clave'].touched
+                          ">
+                                *No cumple con la longitud mínima
+                            </small>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="button-container">
+                        <button class="btn btn-cancelar" type="button" (click)="volver()">Cancelar</button>
+                        <button class="btn btn-registrar" type="button" (click)="Login()">Iniciar sesión</button>
+                    </div>
+                </div>
+            </form>
+            <div class="container-inicio-rapido">
+                <app-inicio-rapido (usuarioClickeado)="seleccionUsuario($event)"></app-inicio-rapido>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" [ngClass]="{ 'show': loading }"></div>
+    <div class="heart" *ngIf="loading">
+        <div></div>
+    </div>

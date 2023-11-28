@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+.background-image {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to top, transparent 10%, rgba(0, 0, 0, 0.5) 80%, rgba(0, 0, 0) 95%), url('/assets/fondos/auth-background.jpg');
+    background-size: cover;
+}
+
+.login-container {
+    position:absolute;
+    z-index: 100;
+    top: 15%;
+    min-height: 60%;
+    right: 22%;
+    left: 20%;
+    margin-bottom: 5rem;
+}
+
+.container-form-rapido
+{
+    display: flex;
+}
+
+.contenedor-form {
+    font-family: "Montserrat", sans-serif;
+    width: 60%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: fit-content;
+    min-height: 34rem;
+    padding: 1rem 2rem 2rem 3rem;
+    border: 2px solid #fff;
+    border-radius: 1rem;
+    background: #7ecffc;
+    box-shadow: 2px 2px 2px #000;
+
+    h2 {
+        font-family: 'Barlow', sans-serif;
+        text-align: center;
+        font-weight: 900;
+        border-radius: 1rem;
+        margin-top: 0px;
+        margin-bottom: 30px;
+    }
+}
+
+.container-inicio-rapido {
+    font-family: 'Barlow', sans-serif;
+    display: block;
+    margin-left: 0%;
+    height: auto;
+    border-radius: 1rem;
+    background: transparent;
+
+    h2 {
+        text-shadow: 2px 2px 2px #000;
+        text-align: center;
+        color: #fff;
+        border-radius: 1rem;
+        margin-top: 0px;
+        margin-bottom: 30px;
+    }
+}
+
+.img-login {
+    display: block;
+    margin: 1rem auto 0;
+    height: 10rem;
+    width: 10rem;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.button-container button {
+    margin: 0 5px;
+}
+
+.btn {
+    border-radius: 8px;
+    color: #f1faee;
+    background-color: #22b687;
+    transition: all 0.3s ease 0s;
+}
+
+.btn:hover {
+    background-color: #f19100;
+    box-shadow: 0px 15px 20px #975b00;
+    color: white;
+    transform: translateY(-7px);
+}
+
+.btn:active {
+    transform: translateY(-1px);
+}
+
+.mensaje-error {
+    color: crimson;
+    font-weight: bolder;
+    font-size: small;
+    border-radius: 5px;
+}
+
+.btn-cancelar {
+    background-color: crimson;
+}
+
+.captcha {
+    font-size: 2rem;
+    text-align: center;
+    color: rgb(0, 0, 0);
+    background: #22b687;
+    padding: 0.6rem;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-weight: bolder;
+    text-shadow: 1px 1px 1px #fff;
+    border: solid 3px #fff;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.overlay.show {
+    display: block;
+}
+
+
+.heart {
+    background-color: crimson;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    position: relative;
+    top: 0;
+    transform: rotate(-45deg);
+    position: absolute;
+    left: 45%;
+    top: 45%;
+    animation: heartbeat 1.25s infinite;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    background-color: crimson;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    animation: pulsecolor 1.25s infinite;
+}
+
+.heart::before {
+    top: -50px;
+    left: 0;
+}
+
+.heart::after {
+    top: 0;
+    left: 50px;
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: scale(1) rotate(-45deg);
+    }
+
+    10% {
+        transform: scale(1.25) rotate(-45deg);
+        background-color: #EF395E;
+    }
+
+    100% {
+        transform: scale(1) rotate(-45deg);
+    }
+}
+
+@keyframes pulsecolor {
+    10% {
+        background-color: #EF395E;
+    }
+}

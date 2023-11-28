@@ -14,7 +14,7 @@ export const canActivateAdminGuard: CanActivateFn = (route, state) => {
   return user$.pipe(
     take(1), 
     map((user) => {
-      if (user && user.rol === 'Administrador') {
+      if (user && user.rol === 'Admin') {
         return true; 
       } else {
         toast.showError("Debe ser administrador para acceder.", "Error");

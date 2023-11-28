@@ -1,1 +1,34 @@
-<p>registro works!</p>
+<div class="background-image">
+    <div class="container" *ngIf="!formEspecialista && !formUsuario">
+      <div class="row swing-in-top-fwd">
+        <div class="col-md-6 ml-3 mr-3">
+          <button class="btn" (click)="eligioUsuario()">
+            <img src="../../../../assets/iconos/usuario.png" alt="Paciente" class="img-fluid" />
+            <h2>Paciente</h2>
+          </button>
+        </div>
+        <div class="col-md-6 ml-3 mr-3">
+          <button class="btn" (click)="eligioEspecialista()">
+            <img src="../../../../assets/iconos/doctor.png" alt="especialista" class="img-fluid" />
+            <h2>Especialista</h2>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="overlay" [ngClass]="{ 'show': loading }"></div>
+
+  <div class="registro-usuario" *ngIf="formUsuario">
+    <app-alta-usuario></app-alta-usuario>
+  </div>
+  <div class="registro-especialista" *ngIf="formEspecialista">
+    <app-alta-especialista></app-alta-especialista>
+  </div>
+  
+<hr>
+
+  <div class="heart" *ngIf="loading">
+    <div ></div>
+  </div>
+

@@ -6,5 +6,28 @@ import { Component } from '@angular/core';
   styleUrls: ['./registro.component.scss']
 })
 export class RegistroComponent {
+  loading = true;
+  formUsuario:boolean = false;
+  formEspecialista:boolean = false;
 
+  ngOnInit(): void {
+  this.loading = true
+    setTimeout(() => {
+      this.loading = false
+    }, 500);
+  }
+
+  eligioUsuario() {
+    this.formUsuario = true;
+  }
+
+  eligioEspecialista() {
+    this.formEspecialista = true;
+  }
+
+  SeleccionRegistro()
+  {
+    this.formUsuario = false;
+    this.formEspecialista = false;
+  }
 }

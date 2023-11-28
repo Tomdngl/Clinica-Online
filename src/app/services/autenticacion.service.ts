@@ -6,6 +6,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
+import { Persona } from '../classes/persona';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,8 @@ export class AutenticacionService {
   user$: Observable<any>;
   seLogueo:boolean = false;
   esAdmin:boolean = false;
+  esPaciente:boolean = false;
+  esEspecialista:boolean = false;
 
   constructor(private swal:SwalService,
     private router:Router,
@@ -42,34 +45,45 @@ export class AutenticacionService {
   SignOut()
   {
     this.afAuth.signOut().then(() =>{
+      this.esAdmin = false;
+      this.esEspecialista = false;
+      this.esPaciente = false;
       this.seLogueo = false;
-      this.swal.Exito("Redirigiendo a home","Sesión cerrada.").then(() => {
-        this.router.navigate(['home'])
-      })
     }).catch((error) => {
-      this.swal.Error("Ha ocurrido un error inesperado.",this.ObtenerMensajeError(error.errorCode))
+      this.swal.Error("Ha ocurrido un error.",this.ObtenerMensajeError(error.errorCode))
       console.log(error)
     })
   }
 
-  RegistrarUsuario(usuario:any)
+  RegistrarUsuario(usuario:Persona)
   {
-      this.afAuth.createUserWithEmailAndPassword(usuario.email,usuario.clave).then((data) =>{
-        this.afStore.collection('usuarios').doc(data.user?.uid).set({
-        idUsuario: data.user?.uid,
-        nombre:usuario.nombre,
-        email:usuario.email,
-        registradoEn:moment(new Date()).format('DD-MM-YYYY HH:mm:ss'),
-        rol:"Usuario"
-      }).then(() => {
-        usuario.idUsuario = data.user?.uid
-        this.CrearLogUsuario(usuario).then(() => {
-          this.swal.Exito("Usuario registrado.","Redirigiendo a home").then(() =>{
-            this.router.navigate([''])
+    console.log(usuario)
+      this.afAuth.createUserWithEmailAndPassword(usuario.email,usuario.password).then((data: any) =>{
+        const uid = data.user?.uid;
+        const documento = this.afStore.doc('usuarios/' + uid);
+        console.info(usuario)
+        documento.set({
+          id: uid,
+          perfil: usuario.perfil,
+          nombre: usuario.nombre,
+          apellido: usuario.apellido,
+          edad: usuario.edad,
+          dni: usuario.dni,
+          obraSocial: usuario.obraSocial,
+          especialidad: usuario.especialidad,
+          email: usuario.email,
+          password: usuario.password,
+          fotos:usuario.fotos,
+          habilitado: usuario.habilitado,
+        }).then(() => {
+            data.user.sendEmailVerification();
+            this.swal.Exito("Éxito","Dirigase a su casilla de correo electrónico para verificar su cuenta.");
+            this.router.navigate(['home'])
           })
-        })
-      })
-    }).catch((error) => {
+          .catch((error) => {
+            this.swal.Error("Error.",this.ObtenerMensajeError(error.code));
+          })
+      }).catch((error) => {
       this.swal.Error("Error.",this.ObtenerMensajeError(error.errorCode))
     })
   }
@@ -84,13 +98,19 @@ CrearLogUsuario(usuario:any)
   return this.afStore.collection("userlogs").add(data);
 }
 
-  ObtenerMensajeError(errorCode: string): string {
+ActualizarUsuario(usuario: any) {
+  this.afStore
+    .doc<any>(`usuarios/${usuario.id}`)
+    .update(usuario)
+    .then(() => { })
+}
 
+  ObtenerMensajeError(errorCode: string): string {
     let mensaje: string = '';
 
     switch (errorCode) {
       case 'auth/invalid-login-credentials':
-        mensaje = 'Crenciales inválidas.';
+        mensaje = 'Credenciales inválidas.';
         break;
       case 'auth/email-already-in-use':
         mensaje = 'El email ingresado ya se encuentra en uso.';

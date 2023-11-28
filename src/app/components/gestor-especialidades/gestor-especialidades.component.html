@@ -1,0 +1,36 @@
+<div class="main">
+    <h3 style="font-size: 20px; margin-top: 2%; font-weight: 600;">
+      Seleccione una especialidad
+    </h3>
+    <div class="list-container" style="margin-bottom: 10px">
+        <input type="text" [(ngModel)]="inputEspecialidad" (input)="filtrarLista()" placeholder="Buscar" class="form-control"
+          pattern="[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+" (blur)="validarEspecialidad()" />
+        <button (click)="agregarEspecialidad()" class="btn btn-primary">
+          Añadir
+        </button>
+    </div>
+    <ul style="overflow-y: auto; min-height: 22rem">
+      <div *ngIf="filtroEspecialidad.length == 0"
+        style="display: flex; flex-direction: column; align-items: flex-start; height: 20px; ">
+        <ng-container *ngFor="let especialidad of filtroEspecialidad">
+          <div style="display: flex; align-items: center; min-width: 95%; margin-right: 1rem;">
+            <button class="btn-lista" (click)="clickListado(especialidad)">
+              {{ especialidad }}
+            </button>
+            <i class="fas fa-times" (click)="borrarEspecialidad(especialidad)"></i>
+          </div>
+        </ng-container>
+      </div>
+      <div *ngIf="filtroEspecialidad.length > 0"
+        style="display: flex; flex-direction: column; align-items: flex-start; height: 20px; ">
+        <ng-container *ngFor="let especialidad of filtroEspecialidad">
+          <div style="display: flex; align-items: center; min-width: 95%; margin-right: 1rem;">
+            <button class="btn-lista" (click)="clickListado(especialidad)">
+              {{ especialidad }}
+            </button>
+            <i class="fas fa-times" (click)="borrarEspecialidad(especialidad)"></i>
+          </div>
+        </ng-container>
+      </div>
+    </ul>
+</div>

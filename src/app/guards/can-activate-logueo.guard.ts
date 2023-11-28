@@ -1,10 +1,10 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { UserService } from '../services/user.service';
 import { SwalService } from '../services/swal.service';
+import { AutenticacionService } from '../services/autenticacion.service';
 
 export const canActivateLogueoGuard: CanActivateFn = (route, state) => {
-  const userService = inject(UserService);
+  const userService = inject(AutenticacionService);
   const router = inject(Router);
   const swal = inject(SwalService)
   const { seLogueo } = userService;
@@ -14,7 +14,7 @@ export const canActivateLogueoGuard: CanActivateFn = (route, state) => {
     return true
   }
 
-  swal.Error("ERROR","¡No puede ingresar sin estar logueado!")
+  swal.Error("Error.","Debe iniciar sesión para ingresar.")
   router.navigateByUrl('/');
   return false;
 };

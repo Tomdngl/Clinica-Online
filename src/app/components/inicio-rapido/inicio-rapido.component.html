@@ -1,0 +1,22 @@
+<div class="main">
+  <h3>
+    Inicio rápido
+  </h3>
+  <div class="list-container" style="margin-bottom: 10px;">
+    <div *ngFor="let usuario of listaAccesoRapido?.pacientes" class="div-container-img">
+      <button class="boton-inicio-rapido" (click)="clickListado(usuario)">
+        <img src="{{ usuario.fotos }}" alt="Imagen de usuario" class="img-inicio-rapido">
+      </button>
+    </div>
+    <div *ngFor="let usuario of listaAccesoRapido?.especialistas" class="div-container-img">
+      <button class="boton-inicio-rapido" (click)="clickListado(usuario)">
+        <img src="{{ usuario.fotos }}" alt="Imagen de usuario" class="img-inicio-rapido">
+      </button>
+    </div>
+    <div *ngFor="let usuario of listaAccesoRapido?.admins" class="div-container-img">
+      <button class="boton-inicio-rapido" (click)="clickListado(usuario)">
+        <img src="{{ usuario.fotos }}" alt="Imagen de usuario" class="img-inicio-rapido">
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,1 +1,125 @@
-<p>alta-especialista works!</p>
+<div class="especialista-container">
+	<form [formGroup]="formEspecialista" class="contenedor-form" (ngSubmit)="Registrar()">
+		<h2>REGISTRO DE ESPECIALISTA</h2>
+		<div class="row">
+			<div class="col-sm mb-3">
+				<input formControlName="nombre" type="text" class="form-control" id="nombre" placeholder="Nombre"
+					style="width: 100%;" />
+				<small class="mensaje-error" *ngIf="
+          formEspecialista.get('nombre')?.invalid &&
+          formEspecialista.get('nombre')?.touched &&
+          formEspecialista.get('nombre')?.errors?.['pattern']">
+					*Solo se permiten letras
+				</small>
+				<small class="mensaje-error" *ngIf="
+          formEspecialista.get('nombre')?.errors?.['required'] &&
+          formEspecialista.get('nombre')?.touched">
+					*Debe rellenar este campo
+				</small>
+			</div>
+			<div class="col-sm mb-3">
+				<input formControlName="apellido" type="text" class="form-control" id="apellido" placeholder="Apellido" />
+				<small class="mensaje-error" *ngIf="
+      formEspecialista.get('apellido')?.invalid &&
+      formEspecialista.get('apellido')?.touched &&
+      formEspecialista.get('apellido')?.errors?.['pattern']">
+					*Solo se permiten letras
+				</small>
+				<small class="mensaje-error" *ngIf="
+      formEspecialista.get('apellido')?.errors?.['required'] &&
+      formEspecialista.get('apellido')?.touched">
+					*Debe rellenar este campo
+				</small>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm mb-3">
+				<input formControlName="edad" type="number" class="form-control" placeholder="Edad" min="18" max="99" />
+				<small class="mensaje-error"
+					*ngIf="formEspecialista.controls['edad'].errors?.['required'] && formEspecialista.controls['edad'].touched">
+					*Debe rellenar este campo
+				</small>
+				<small class="mensaje-error"
+					*ngIf="formEspecialista.controls['edad'].errors?.['min'] || (formEspecialista.controls['edad'].errors?.['max'] && formEspecialista.controls['edad'].touched)">
+					*Debe ser entre 18 y 99 años
+				</small>
+			</div>
+			<div class="col-sm mb-3">
+				<input formControlName="dni" type="number" class="form-control" placeholder="N° DNI" min="11111111"
+					max="99999999" />
+				<small class="mensaje-error" *ngIf="
+        formEspecialista.controls['dni'].errors?.['required'] &&
+        formEspecialista.controls['dni'].touched">
+					*Debe rellenar este campo
+				</small>
+				<small class="mensaje-error"
+					*ngIf="formEspecialista.controls['dni'].errors?.['min'] || (formEspecialista.controls['dni'].errors?.['max'] && formEspecialista.controls['dni'].touched)">
+					*El DNI es inválido
+				</small>
+			</div>
+		</div>
+		<div>
+			<div class="col-sm mb-3">
+				<input formControlName="especialidad" type="text" class="form-control" placeholder="Especialidad"
+					[ngModel]="textoEspecialidades" readonly />
+				<small class="mensaje-error"
+					*ngIf="
+        formEspecialista.controls['especialidad'].errors?.['required'] && formEspecialista.controls['especialidad'].touched">
+					*Debe rellenar este campo
+				</small>
+			</div>
+			<div class="col-sm mb-3">
+				<input formControlName="email" type="email" class="form-control" placeholder="Correo electrónico" />
+				<small class="mensaje-error"
+					*ngIf="formEspecialista.controls['email'].errors?.['required'] && formEspecialista.controls['email'].touched">
+					*Debe rellenar este campo
+				</small>
+				<small class="mensaje-error"
+					*ngIf="formEspecialista.controls['email'].errors?.['email'] && formEspecialista.controls['email'].touched">
+					*El correo electrónico es inválido
+				</small>
+			</div>
+			<div class="col-sm mb-3">
+				<input formControlName="clave" type="password" class="form-control" placeholder="Contraseña" pattern=".{6,}"
+					title="Debe tener como mínimo 6 caracteres" />
+				<small class="mensaje-error" *ngIf="
+          formEspecialista.controls['clave'].errors?.['required'] &&
+          formEspecialista.controls['clave'].touched
+        ">
+					*Debe rellenar este campo
+				</small>
+				<small class="mensaje-error" *ngIf="
+          formEspecialista.controls['clave'].errors?.['pattern'] &&
+          formEspecialista.controls['clave'].touched
+        ">
+					*No cumple con la longitud mínima
+				</small>
+			</div>
+			<div class="row mb-1">
+				<div class="col-sm">
+					<label for="file" style="font-size: 20px">Subida de imagen:</label>
+					<input type="file" id="fileInput" name="foto" accept="image/*" multiple
+						(change)="handleFileInputChange($event)" class="form-control text-success" formControlName="foto"
+						required />
+				</div>
+			</div>
+			<div class="row mb-3">
+				<div>
+					<p>Implementar recaptcha</p>
+				</div>
+			</div>
+		</div>
+		<div class="button-container">
+			<button class="btn btn-cancelar" type="button" (click)="volver()">Cancelar</button>
+			<button class="btn" type="submit">Registrar</button>
+		</div>
+	</form>
+	<div class="contenedor-especialidad">
+		<app-gestor-especialidades (botonClickeado)="clickListado($event)"></app-gestor-especialidades>
+	</div>
+</div>
+
+<div class="overlay" [ngClass]="{ 'show': loading }"></div>
+<div class="heart" *ngIf="loading">
+	<div></div>
+</div>

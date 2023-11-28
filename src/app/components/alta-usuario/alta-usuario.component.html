@@ -1,1 +1,114 @@
-<p>alta-usuario works!</p>
+<div class="usuario-container">
+  <form [formGroup]="formPaciente" class="contenedor-form" (ngSubmit)="Registrar()">
+    <h2>REGISTRO DE PACIENTE</h2>
+    <div class="row mb-3">
+      <div class="col-sm">
+        <input type="text" class="form-control" id="nombre" formControlName="nombre" placeholder="Nombre" />
+        <small class="mensaje-error" *ngIf="
+          formPaciente.get('nombre')?.invalid &&
+          formPaciente.get('nombre')?.touched &&
+          formPaciente.get('nombre')?.errors?.['pattern']">
+          *Solo se permiten letras
+        </small>
+        <small class="mensaje-error" *ngIf="
+          formPaciente.get('nombre')?.errors?.['required'] &&
+          formPaciente.get('nombre')?.touched">
+          *Debe rellenar este campo
+        </small>
+      </div>
+      <div class="col-sm">
+        <input type="text" class="form-control" id="apellido" formControlName="apellido" placeholder="Apellido" />
+        <small class="mensaje-error" *ngIf="
+          formPaciente.get('apellido')?.invalid &&
+          formPaciente.get('apellido')?.touched &&
+          formPaciente.get('apellido')?.errors?.['pattern']">
+          *Solo se permiten letras
+        </small>
+        <small class="mensaje-error" *ngIf="
+          formPaciente.get('apellido')?.errors?.['required'] &&
+          formPaciente.get('apellido')?.touched">
+          *Debe rellenar este campo
+        </small>
+      </div>
+      <div class="col-sm">
+        <input type="number" class="form-control" id="edad" formControlName="edad" min="18" max="99"
+          placeholder="Edad" />
+        <small class="mensaje-error"
+          *ngIf="formPaciente.controls['edad'].errors?.['required'] && formPaciente.controls['edad'].touched">
+          *Debe rellenar este campo
+        </small>
+        <small class="mensaje-error" *ngIf="formPaciente.controls['edad'].errors?.['min'] || (formPaciente.controls['edad'].errors?.['max'] &&
+        formPaciente.controls['edad'].touched)">
+          *La edad debe ser entre 18 y 99 años
+        </small>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md">
+        <input type="number" class="form-control" id="dni" formControlName="dni" min="11111111" max="99999999"
+          placeholder="N° DNI" />
+        <small class="mensaje-error" *ngIf="
+              formPaciente.controls['dni'].errors?.['required'] &&
+              formPaciente.controls['dni'].touched">
+          *Debe rellenar este campo
+        </small>
+        <small class="mensaje-error"
+          *ngIf="formPaciente.controls['dni'].errors?.['min'] || (formPaciente.controls['dni'].errors?.['max'] && formPaciente.controls['dni'].touched)">
+          *El DNI es inválido
+        </small>
+      </div>
+      <div class="col-md">
+        <input type="text" class="form-control" id="obrasocial" formControlName="obraSocial"
+          placeholder="Obra social" />
+        <small class="mensaje-error"
+          *ngIf="formPaciente.controls['obraSocial'].errors?.['required'] && formPaciente.controls['obraSocial'].touched">
+          *Debe rellenar este campo
+        </small>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md">
+        <input type="email" class="form-control" id="email" formControlName="email" placeholder="Correo Electrónico" />
+        <small class="mensaje-error" *ngIf="formPaciente.controls['email'].errors?.['required'] && formPaciente.controls['email'].touched">
+          *Debe rellenar este campo
+        </small>
+        <small class="mensaje-error" *ngIf="formPaciente.controls['email'].errors?.['email'] && formPaciente.controls['email'].touched">
+          *El correo es inválido
+        </small>
+      </div>
+    </div>
+    
+    <div class="row mb-3">
+      <div class="col-md">
+        <input type="password" class="form-control" id="clave" formControlName="clave" placeholder="Contraseña" />
+        <small class="mensaje-error" *ngIf="formPaciente.controls['clave'].errors?.['required'] && formPaciente.controls['clave'].touched">
+          *Debe rellenar este campo
+        </small>
+        <small class="mensaje-error" *ngIf="formPaciente.controls['clave'].errors?.['minlength'] && formPaciente.controls['clave'].touched">
+          *No cumple con la longitud mínima
+        </small>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm">
+        <label for="file" style="font-size: 20px">Subida de imagen:</label>
+        <input type="file" id="fileInput" name="foto" accept="image/*" multiple (change)="handleFileInputChange($event)"
+          class="form-control text-success" formControlName="foto" required />
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div>
+        <p>Implementar recaptcha</p>
+      </div>
+    </div>
+	 <div class="button-container">
+		<button class="btn btn-cancelar" type="button" (click)="volver()">Cancelar</button>
+		<button class="btn" type="submit">Registrar</button>
+	</div>
+  </form>
+</div>
+
+<div class="overlay" [ngClass]="{ 'show': loading }"></div>
+<div class="heart" *ngIf="loading">
+  <div></div>
+</div>
