@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GestorEspecialidadesComponent } from './gestor-especialidades/gestor-especialidades.component';
 import { InicioRapidoComponent } from './inicio-rapido/inicio-rapido.component';
 import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
+import { AltaAdminComponent } from './alta-admin/alta-admin.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
     AltaUsuarioComponent,
     AltaEspecialistaComponent,
     GestorEspecialidadesComponent,
-    InicioRapidoComponent
+    InicioRapidoComponent,
+    AltaAdminComponent
   ],
   imports: [
     RecaptchaModule,
@@ -31,6 +33,7 @@ import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
     LayoutComponent,
     AltaEspecialistaComponent,
     AltaUsuarioComponent,
+    AltaAdminComponent,
     GestorEspecialidadesComponent,
     InicioRapidoComponent
   ]

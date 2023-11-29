@@ -8,9 +8,7 @@ import { SwalService } from 'src/app/services/swal.service';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent {
-
   usuario:any = null
-  rol:any = null
 
   constructor(public autenticacion: AutenticacionService, private swal: SwalService) { }
 

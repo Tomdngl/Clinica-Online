@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+$font: 'Montserrat', sans-serif;
+
+.background-image {
+  font-family: $font;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to top, transparent 10%, rgba(0, 0, 0, 0.5) 80%, rgba(0, 0, 0) 95%), url('/assets/fondos/bienvenido-background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: fixed;
+}
+
+.separador {
+  height: 16vh;
+}
+
+.main-container {
+  display: flex;
+  top: 20%;
+}
+
+.tabla-usuario {
+  font-family: $font;
+  flex: 70%;
+  width: 70%;
+  height: 80vh;
+  overflow-y: scroll;
+  border-radius: 1%;
+  z-index: 100;
+  padding: 1rem;
+  background-color: #7ed0fcec;
+  border: 2px solid #000000;
+  margin-left: 1rem;
+
+  h3 {
+    font-family: $font;
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bolder;
+    font-size: 2rem;
+  }
+}
+
+h3 {
+  font-family: $font;
+  text-align: center;
+  margin-bottom: 20px;
+  color: black;
+  font-weight: bolder;
+  font-size: 2rem;
+}
+
+.acciones-container {
+  margin: 0 1rem;
+  padding: 1rem 1rem;
+  background-color: #7ed0fce0;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 80vh;
+  flex: 30%;
+  border: 2px solid #000000;
+}
+
+.btn-accion {
+  height: auto;
+  width: 15rem;
+  position: relative;
+  background-color: white;
+  border: 1px solid #ccc;
+  margin: 1rem auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+}
+
+.btn-accion:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.btn-imagen {
+  width: 4rem;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+
+.btn-accion span {
+  text-align: center; 
+}
+
+.table {
+  --bs-table-bg: #fbc333;
+  --bs-table-color: #000000;
+  font-weight: bold;
+}
+
+.tr-tabla {
+  font-size: 1.2rem;
+}
+
+.imagen-usuario {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 25px;
+  border-color: #000;
+}
+
+.user-name {
+  display: block;
+}
+
+.opcion-registros {
+  margin-top: 2rem;
+  z-index: 100;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.btn {
+  margin: 2rem;
+  border-radius: 10px;
+  width:20rem;
+  height: 20rem;
+  background-color: #ebf3e8;
+
+  img {
+    margin-top: 0.7rem;
+    width: 10rem;
+  }
+
+  h2 {
+    margin-top: 2rem;
+    font-weight: bolder;
+    letter-spacing: 0.25rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.registro-usuario {
+  position:absolute;
+  z-index: 100;
+  top: 15%;
+  min-height: 80%;
+  right: 10%;
+  left: 10%;
+  margin-bottom: 5rem;
+}
+
+.registro-especialista {
+  position:absolute;
+  z-index: 100;
+  top: 15%;
+  min-height: 80%;
+  right: 10%;
+  left: 10%;
+  margin-bottom: 5rem;
+}
+
+.btn-habilitar {
+  width: 10rem;
+  border-radius: 6%;
+  background-color: #5e9bbc;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: 0.5s;
+  text-shadow: 1px 1px 1px #000;
+  border: 2px solid black;
+}
+
+.btn-habilitar span:last-child {
+  display: none;
+}
+
+.btn-habilitar:hover {
+  transition: 0.5s;
+  background-color: #5e9bbc;
+}
+
+.btn-deshabilitar {
+  width: 12rem;
+  background-color: #630101;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border: 2px solid #000000;
+  transition: 0.5s;
+  text-shadow: 1px 1px 1px #000;
+}
+
+.btn-deshabilitar span:last-child {
+  display: none;
+}
+
+.btn-deshabilitar:hover {
+  transition: 0.5s;
+  background-color: red;
+}
+
+.btn-volver{
+  display: block;
+  position: absolute;
+  width: 6rem;
+  height: 6rem;
+  top: 16%;
+  left: 2%;
+  background: transparent;
+  border: none;
+}
+
+.tabla-usuario::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+.tabla-usuario::-webkit-scrollbar {
+  width: 12px;
+  background-color: transparent;
+}
+
+.tabla-usuario::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+  background-color: #5e9bbc;
+}

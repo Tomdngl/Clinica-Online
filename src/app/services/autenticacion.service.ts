@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 import { Persona } from '../classes/persona';
+import firebase from 'firebase/compat/app';
 
 @Injectable({
   providedIn: 'root'
@@ -57,8 +58,19 @@ export class AutenticacionService {
 
   RegistrarUsuario(usuario:Persona)
   {
+    var config = {
+      projectId: "clinica-online-8b8b6",
+      appId: "1:230463154618:web:2bf27c6915406774e99583",
+      storageBucket: "clinica-online-8b8b6.appspot.com",
+      apiKey: "AIzaSyBRqBaDidOpIeYPYbUuQX4McXkVT-WExUo",
+      authDomain: "clinica-online-8b8b6.firebaseapp.com",
+      messagingSenderId: "230463154618"
+    };
+    
+    const secondaryApp = firebase.initializeApp(config, "Secondary");
+
     console.log(usuario)
-      this.afAuth.createUserWithEmailAndPassword(usuario.email,usuario.password).then((data: any) =>{
+      secondaryApp.auth().createUserWithEmailAndPassword(usuario.email,usuario.password).then((data: any) =>{
         const uid = data.user?.uid;
         const documento = this.afStore.doc('usuarios/' + uid);
         console.info(usuario)
@@ -77,13 +89,19 @@ export class AutenticacionService {
           habilitado: usuario.habilitado,
         }).then(() => {
             data.user.sendEmailVerification();
-            this.swal.Exito("Éxito","Dirigase a su casilla de correo electrónico para verificar su cuenta.");
+            this.swal.Exito("Éxito","Revisar la casilla de correo electrónico para verificar la cuenta.");
             this.router.navigate(['home'])
           })
           .catch((error) => {
             this.swal.Error("Error.",this.ObtenerMensajeError(error.code));
           })
+          .finally(() => {
+            secondaryApp.auth().signOut();
+            secondaryApp.delete();
+          });
       }).catch((error) => {
+        console.log("Error")
+        console.log(error)
       this.swal.Error("Error.",this.ObtenerMensajeError(error.errorCode))
     })
   }
@@ -107,6 +125,7 @@ ActualizarUsuario(usuario: any) {
 
   ObtenerMensajeError(errorCode: string): string {
     let mensaje: string = '';
+    console.log(errorCode)
 
     switch (errorCode) {
       case 'auth/invalid-login-credentials':

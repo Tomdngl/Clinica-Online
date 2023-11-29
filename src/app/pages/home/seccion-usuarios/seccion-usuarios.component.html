@@ -1,0 +1,94 @@
+<div class="background-image"></div>
+<div class="separador"></div>
+<div class="main-container">
+    <div class="tabla-usuario" *ngIf="!createrUserMenu">
+        <h3>LISTADO DE USUARIOS</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">FOTO</th>
+                    <th scope="col">PERFIL</th>
+                    <th scope="col">NOMBRE</th>
+                    <th scope="col">APELLIDO</th>
+                    <th scope="col">ACCIÓN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="tr-tabla" *ngFor="let user of listadoUsuarios">
+                    <td>
+                        <div style="display: flex; flex-direction: column; align-items: start; margin: 0;">
+                            <img class="imagen-usuario" src="{{ user.fotos[0] }}" alt="imagen" />
+                        </div>
+                    </td>
+                    <td>
+                        <span>{{ user.perfil }}</span>
+                    </td>
+                    <td>
+                        <span>{{ user.nombre }}</span>
+                    </td>
+                    <td>
+                        <span>{{ user.apellido }}</span>
+                    </td>
+                    <td>
+                        <div *ngIf="user.perfil == 'Especialista'">
+                            <button class="btn-habilitar" *ngIf="!user.habilitado" (click)="actualizarUser(user, 1)">
+                                Habilitar
+                            </button>
+                            <button class="btn-deshabilitar" *ngIf="user.habilitado" (click)="actualizarUser(user, 2)">
+                                Deshabilitar
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="!createrUserMenu" class="acciones-container">
+        <h3 style="text-align: center;">ACCIONES</h3>
+
+        <button class="btn-accion" *ngIf="!createrUserMenu" (click)="mostrarMenuUsuarios()">
+            <img src="../../../../assets/iconos/add.png" class="btn-imagen" alt="Icono">
+            <span>REGISTRAR USUARIO</span>
+        </button>
+
+        <button class="btn-accion" *ngIf="!createrUserMenu" (click)="descargarExcel()">
+            <img src="../../../../assets/iconos/excel.png" class="btn-imagen" alt="Icono">
+            <span>DESCARGAR EXCEL</span>
+        </button>
+
+        <button class="btn-accion" (click)="volver()">
+            <img src="../../../../assets/iconos/volver.png" class="btn-imagen" alt="Icono">
+            <span>VOLVER</span>
+        </button>
+    </div>
+</div>
+
+
+<div class="opcion-registros" *ngIf="!formPaciente && !formEspecialista && !formAdministrador && createrUserMenu">
+    <button class="btn" (click)="mostrarFormPaciente()">
+        <img src="../../../../assets/iconos/usuario.png" alt="Paciente" />
+        <h2>Paciente</h2>
+    </button>
+    <button class="btn" (click)="mostrarFormEspecialista()">
+        <img src="../../../../assets/iconos/doctor.png" alt="especialista" />
+        <h2>Especialista</h2>
+    </button>
+    <button class="btn" (click)="mostrarFormAdministrador()">
+        <img src="../../../../assets/iconos/admin.png" alt="administrador" />
+        <h2>Administrador</h2>
+    </button>
+</div>
+
+<button class="btn-volver" (click)="mostrarListaUsuarios()" *ngIf="formEspecialista || formAdministrador || formPaciente">
+    <img src="../../../../assets/iconos/volver.png" alt="volver" class="btn-volver" />
+</button>
+
+<div class="registro-usuario" *ngIf="formPaciente">
+    <app-alta-usuario></app-alta-usuario>
+</div>
+<div class="registro-especialista" *ngIf="formEspecialista">
+    <app-alta-especialista></app-alta-especialista>
+</div>
+<div class="registro-especialista" *ngIf="formAdministrador">
+    <app-alta-admin></app-alta-admin>
+</div>
