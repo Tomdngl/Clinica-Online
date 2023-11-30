@@ -5,11 +5,26 @@ import { AutenticacionService } from 'src/app/services/autenticacion.service';
 import { SwalService } from 'src/app/services/swal.service';
 import { Router } from '@angular/router';
 import { FirestoreService } from 'src/app/services/firestore.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  animations: [
+    // Define la animación
+    trigger('slideInFromRight', [
+      state('void', style({
+        transform: 'translateX(100%)',
+        opacity: 0
+      })),
+      state('*', style({
+        transform: 'translateX(0)',
+        opacity: 1
+      })),
+      transition('void => *', animate('500ms ease-in')),
+    ])
+  ]
 })
 export class LoginComponent {
   loading: boolean = false

@@ -248,7 +248,6 @@ export class MiPerfilComponent {
           break;
       }
 
-      // CREACION DE TURNOS
       for (let j = 1; j <= 60; j++) {
         const date = new Date(currentDate.getTime() + 84600000 * j);
         if (date.getDay() == dayNumber) {
@@ -299,7 +298,6 @@ export class MiPerfilComponent {
     turno.especialista = this.usuario;
     turno.turnos = listaDeTurnos;
 
-    
     if (this.turnosActuales?.turnos?.length) {
       let especialidad: string = '';
       if (this.especialidad1) {

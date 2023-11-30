@@ -1,5 +1,5 @@
 <div class="background-image">
-    <div class="container" *ngIf="!formEspecialista && !formUsuario">
+    <div class="container" *ngIf="!formEspecialista && !formUsuario" [@slideInFromRight]>
       <div class="row swing-in-top-fwd">
         <div class="col-md-6 ml-3 mr-3">
           <button class="btn" (click)="eligioUsuario()">

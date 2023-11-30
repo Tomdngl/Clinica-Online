@@ -1,9 +1,23 @@
 import { Component } from '@angular/core';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.scss']
+  styleUrls: ['./registro.component.scss'],
+  animations: [
+    trigger('slideInFromRight', [
+      state('void', style({
+        transform: 'translateX(100%)',
+        opacity: 0
+      })),
+      state('*', style({
+        transform: 'translateX(0)',
+        opacity: 1
+      })),
+      transition('void => *', animate('500ms ease-in')),
+    ])
+  ]
 })
 export class RegistroComponent {
   loading = true;
