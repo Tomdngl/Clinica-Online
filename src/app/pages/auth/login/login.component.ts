@@ -48,20 +48,24 @@ export class LoginComponent {
             const usuarioLogueado = querySnapshot.docs[0].data() as Persona;
             switch (usuarioLogueado.perfil) {
               case "Paciente":
-                this.swal.Exito("Éxito", "Redirigiendo a inicio.").then(() => {
+                this.swal.Exito("Éxito", "Ha iniciado sesión...").then(() => {
                   usuarioLogueado.habilitado = true;
                   this.authService.ActualizarUsuario(usuarioLogueado);
+                  console.info("Entro paciente");
                   this.authService.seLogueo = true;
+                  this.authService.esPaciente = true;
                   this.router.navigate(['']);
                   this.loading = false;
                 });
                 break;
               case "Especialista":
                 if (usuarioLogueado.habilitado) {
-                  this.swal.Exito("Éxito", "Redirigiendo a inicio.").then(() => {
+                  this.swal.Exito("Éxito", "Ha iniciado sesión...").then(() => {
                     usuarioLogueado.habilitado = true;
                     this.authService.ActualizarUsuario(usuarioLogueado);
+                    console.info("Entro especialista");
                     this.authService.seLogueo = true;
+                    this.authService.esEspecialista = true;
                     this.router.navigate(['']);
                   });
                 }
@@ -73,8 +77,10 @@ export class LoginComponent {
                 this.loading = false;
                 break;
               default:
-                this.swal.Exito("Éxito", "Redirigiendo a inicio.").then(() => {
+                this.swal.Exito("Éxito", "Ha iniciado sesión...").then(() => {
+                  console.info("Entro admin");
                   this.authService.seLogueo = true;
+                  this.authService.esAdmin = true;
                   this.router.navigate(['']);
                   this.loading = false;
                 });

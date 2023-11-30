@@ -28,7 +28,6 @@ export class AutenticacionService {
       this.user$ = this.afAuth.authState.pipe(
         switchMap(user => {
           if(user) {
-            this.seLogueo = true;
             return this.afStore.doc<any>(`usuarios/${user.uid}`).valueChanges();
           }
           else {

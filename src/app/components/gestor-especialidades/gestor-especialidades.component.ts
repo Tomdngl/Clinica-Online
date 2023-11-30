@@ -85,7 +85,7 @@ export class GestorEspecialidadesComponent {
     const nombreEspecialidad = { nombre: especialidad };
 
     if (!this.listaEspecialidades.some((e: any) => e.nombre === especialidad)) {
-      if (this.listaEspecialidades.length < 3) {
+      if (this.listaEspecialidades.length < 2) {
         this.listaEspecialidades.push(nombreEspecialidad);
         this.botonClickeado.emit(this.listaEspecialidades);
       }

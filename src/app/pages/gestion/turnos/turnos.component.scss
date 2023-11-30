@@ -1,0 +1,214 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+$font: "Montserrat", sans-serif;
+
+.turnos-container {
+    font-family: $font;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to top, transparent 10%, rgba(0, 0, 0, 0.5) 80%, rgba(0, 0, 0) 95%), url('/assets/fondos/auth-background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: fixed;
+  }
+
+.turnos {
+  position: absolute;
+  overflow-y: scroll;
+  width: 90vw;
+  height: 80vh;
+  top: 18%;
+  left: 5%;
+  z-index: 100;
+  padding: 1rem;
+  border-radius: 1rem;
+  background: #7ed0fcec;
+  h3 {
+    font-family: $font;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #F1FAEE;
+    font-weight: bolder;
+    font-size: 2rem;
+  }
+  label {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  p {
+    font-size: 1rem;
+    color: rgb(255, 255, 255);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+}
+
+.tabla-usuario {
+  height: 75%;
+  overflow-y: scroll;
+  z-index: 100;
+  left: 5%;
+  top: 18%;
+  padding: 1rem;
+  border: 2px solid #fff;
+  box-shadow: 2px 2px 4px #000;
+  h3 {
+    text-align: center;
+  }
+}
+
+.tr-tabla:hover {
+  color: #fff;
+  background: #4b9a81;
+  transition: background 0.5s;
+}
+
+.btn-especialista:hover {
+  background: rgb(0, 0, 0);
+  box-shadow: 2px 2px 4px #000;
+}
+
+.btn-cancelar{
+  color: #ffff;
+  background: #660101;
+  box-shadow: 2px 2px 4px #000;
+}
+.btn-cancelar:hover {
+  background: #ff0000;
+  box-shadow: 2px 2px 4px #000;
+}
+.btn-confirmar:hover {
+  background: #18e809;
+}
+
+.estado {
+  font-weight: bolder;
+  text-transform: uppercase;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(255, 255, 255);
+  background: #0071b3;
+}
+
+.input-busqueda {
+  width: 15rem;
+  border: 3px solid rgb(0, 119, 255);
+  border-radius: 10px;
+  height: 2rem;
+  padding-left: 1rem;
+  box-shadow: 2px 2px 4px #000;
+}
+
+.input-busqueda:focus {
+  border: 3px solid rgb(0, 119, 255);
+  box-shadow: 0 0 12px #0099ff;
+  transition: box-shadow 0.5s;
+}
+
+@media screen and (max-width: 480px) {
+  .turnos-container {
+    min-height: 100vh;
+  }
+  .turnos {
+    overflow-y: scroll;
+    overflow-x: scroll;
+    width: 95vw;
+    height: 85vh;
+    top: 14%;
+    left: 2%;
+  }
+  .input-busqueda {
+    width: 10rem;
+    margin-bottom: 0.5rem;
+  }
+  .tabla-usuario {
+    width: 100%;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 999; 
+  display: none; 
+}
+
+.overlay.show {
+  display: block; 
+}
+
+.heart {
+  background-color: crimson;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  position: relative;
+  top: 0;
+  transform: rotate(-45deg);
+  position: absolute;
+  left: 45%; 
+  top: 45%;
+  animation: heartbeat 1.25s infinite;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  background-color: crimson;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: absolute;
+  animation: pulsecolor 1.25s infinite;
+}
+
+.heart::before {
+  top: -50px;
+  left: 0;
+}
+
+.heart::after {
+  top: 0;
+  left: 50px;
+}
+
+@keyframes heartbeat {
+  0% {
+    transform: scale(1)
+               rotate(-45deg);
+    }
+  10% {
+    transform: scale(1.25)
+               rotate(-45deg);
+    background-color: #EF395E;
+    }
+  100% {
+      transform: scale(1)
+                 rotate(-45deg);
+  }
+}
+
+@keyframes pulsecolor {
+  10% {
+  background-color: #EF395E;
+  }
+}
+
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.1);
+  }
+  100% {
+      transform: scale(1);
+  }
+}

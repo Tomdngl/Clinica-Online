@@ -57,4 +57,30 @@ export class FirestoreService {
       });
     });
   }
+//Gestion de turnos
+
+  CrearListadoTurnos(turno: any) {
+    this.angularFirestore
+      .collection<any>('turnos')
+      .add(turno)
+      .then((data) => {
+        this.angularFirestore.collection('turnos').doc(data.id).set({
+          id: data.id,
+          especialista: turno.especialista,
+          turnos: turno.turnos,
+        });
+      });
+  }
+
+  ActualizarListadoTurnos(turno: any) {
+    this.angularFirestore
+      .doc<any>(`turnos/${turno.id}`)
+      .update(turno)
+      .then(() => { })
+  }
+
+  ObtenerListadoTurnos() {
+    const collection = this.angularFirestore.collection<any>('turnos');
+    return collection.valueChanges();
+  }
 }

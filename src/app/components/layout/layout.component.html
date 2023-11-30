@@ -11,9 +11,25 @@
             <a class="nav-link active" aria-current="page" routerLinkActive="active" routerLinkActive="router-link-active"
               [routerLink]="['/home']">Inicio</a>
           </li>
-          <li class="nav-item dropdown-center"  *ngIf="usuario?.perfil == 'Admin'">
+          <li class="nav-item"  *ngIf="authService.seLogueo">
+            <a class="nav-link" aria-current="page" [routerLink]="['/gestion/mi-perfil']">
+                Mi perfil</a>
+          </li>
+          <li class="nav-item"  *ngIf="authService.seLogueo">
+            <a class="nav-link" aria-current="page" [routerLink]="['/gestion/mis-turnos']">
+                Mis turnos</a>
+          </li>
+          <li class="nav-item"  *ngIf="authService.seLogueo">
+            <a class="nav-link" aria-current="page" [routerLink]="['/gestion/solicitar-turno']">
+                Solicitar turno</a>
+          </li>
+          <li class="nav-item dropdown-center"  *ngIf="usuario?.perfil == 'Admin' && authService.seLogueo">
             <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false" [routerLink]="['/home/seccion-usuarios']">
               Usuarios</a>
+          </li>
+          <li class="nav-item"  *ngIf="usuario?.perfil == 'Admin' && authService.seLogueo">
+            <a class="nav-link" aria-current="page" [routerLink]="['/gestion/turnos']">
+                Turnos</a>
           </li>
         </ul>
           <button class="btn chat-icon"  *ngIf="usuario" (click)="CerrarSesion()">

@@ -17,6 +17,10 @@ const routes: Routes = [
     loadChildren:() => import('../app/pages/auth/auth.module').then(m => m.AuthModule)
   },
   {
+    path:'gestion',
+    loadChildren:() => import('../app/pages/gestion/gestion.module').then(m => m.GestionModule)
+  },
+  {
     path: '**',
     component: ErrorComponent 
   }
