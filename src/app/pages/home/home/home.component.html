@@ -7,10 +7,10 @@
             <img class="card-img-top mx-auto" [src]="'/assets/favicon.png'">
             <div class="card-body">
                 <br>
-                <a class="login-button ingresar-button"  [routerLink]="usuario !== null ? '/home/gestion' : '/auth/login'">
+                <a appResaltarHover class="login-button ingresar-button"  [routerLink]="usuario !== null ? '/home/gestion' : '/auth/login'">
                     <i class="fas fa-door-open fa-beat"></i>  Ingresar
                 </a>
-                <a class="login-button registrarse-button" [routerLink]="'/auth/registro'">
+                <a appResaltarHover class="login-button registrarse-button" [routerLink]="'/auth/registro'">
                     <i class="fa-solid fa-plus fa-beat"></i>  Registrarse
                 </a>                     
             </div>            

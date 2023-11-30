@@ -19,11 +19,17 @@ const EXCEL_EXTENSION = '.xlsx';
 export class SeccionUsuariosComponent implements OnInit {
 
   listadoUsuarios: any[] = [];
-  createrUserMenu: boolean = false;
+  crearMenuUsuario: boolean = false;
   formPaciente: boolean = false;
   formEspecialista: boolean = false;
   formAdministrador: boolean = false;
   loading: boolean = false;
+  
+  historialClinico: any[] = [];
+  historialActivo: any[] = [];
+  hayHistorial: boolean = false;
+
+  listaTurnos: any[] = [];
 
   constructor(private router: Router,
     private firestoreService: FirestoreService,
@@ -34,11 +40,32 @@ export class SeccionUsuariosComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.firestoreService.TraerUsuarios().subscribe((users) => {
+      this.loading = false;
       if (users) {
-        this.loading = false;
         this.listadoUsuarios = users;
       }
-    })
+      this.firestoreService.getHistorialesClinicos().subscribe((historial) => {
+        this.historialClinico = historial;
+        historial.forEach((h) => {
+          for (let i = 0; i < this.listadoUsuarios.length; i++) {
+            const usuario = this.listadoUsuarios[i];
+            if (usuario.perfil == 'Paciente' && usuario.id == h.paciente.id) {
+              this.listadoUsuarios[i].historial = true;
+            }
+          }
+        });
+      });
+      this.firestoreService.ObtenerListadoTurnos().subscribe((turnos: any) => {
+        this.listaTurnos = [];
+        for (let i = 0; i < turnos.length; i++) {
+          const turnoEspecialista = turnos[i].turnos;
+          for (let j = 0; j < turnoEspecialista.length; j++) {
+            const t = turnoEspecialista[j];
+            this.listaTurnos.push(t);
+          }
+        }
+      });
+    });
   }
 
   actualizarUser(user: Persona, option: number) {
@@ -55,12 +82,24 @@ export class SeccionUsuariosComponent implements OnInit {
     }
   }
 
+  VerHistorialPaciente(paciente: any,event:any) {
+    console.info('Entra')
+    this.historialActivo = [];
+    for (let i = 0; i < this.historialClinico.length; i++) {
+      const historial = this.historialClinico[i];
+      if (historial.paciente.id == paciente.id) {
+        this.historialActivo.push(historial);
+      }
+    }
+    event.stopPropagation();
+  }
+
   mostrarMenuUsuarios() {
-    this.createrUserMenu = true;
+    this.crearMenuUsuario = true;
   }
 
   mostrarListaUsuarios() {
-    this.createrUserMenu = false;
+    this.crearMenuUsuario = false;
     this.formPaciente = false;
     this.formEspecialista = false;
     this.formAdministrador = false;

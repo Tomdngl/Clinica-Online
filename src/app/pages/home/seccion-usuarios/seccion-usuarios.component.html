@@ -1,7 +1,7 @@
 <div class="background-image"></div>
 <div class="separador"></div>
 <div class="main-container">
-    <div class="tabla-usuario" *ngIf="!createrUserMenu">
+    <div class="tabla-usuario" *ngIf="!crearMenuUsuario">
         <h3>LISTADO DE USUARIOS</h3>
         <table class="table">
             <thead>
@@ -14,48 +14,50 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="tr-tabla" *ngFor="let user of listadoUsuarios">
+                <tr class="tr-tabla" *ngFor="let usuario of listadoUsuarios">
                     <td>
                         <div style="display: flex; flex-direction: column; align-items: start; margin: 0;">
-                            <img class="imagen-usuario" src="{{ user.fotos[0] }}" alt="imagen" />
+                            <img class="imagen-usuario" src="{{ usuario.fotos[0] }}" alt="imagen" />
                         </div>
                     </td>
                     <td>
-                        <span>{{ user.perfil }}</span>
+                        <span>{{ usuario.perfil }}</span>
                     </td>
                     <td>
-                        <span>{{ user.nombre }}</span>
+                        <span>{{ usuario.nombre }}</span>
                     </td>
                     <td>
-                        <span>{{ user.apellido }}</span>
+                        <span>{{ usuario.apellido }}</span>
                     </td>
                     <td>
-                        <div *ngIf="user.perfil == 'Especialista'">
-                            <button class="btn-habilitar" *ngIf="!user.habilitado" (click)="actualizarUser(user, 1)">
+                        <div *ngIf="usuario.perfil == 'Especialista'">
+                            <button class="btn-habilitar" *ngIf="!usuario.habilitado" (click)="actualizarUser(usuario, 1)">
                                 Habilitar
                             </button>
-                            <button class="btn-deshabilitar" *ngIf="user.habilitado" (click)="actualizarUser(user, 2)">
+                            <button class="btn-deshabilitar" *ngIf="usuario.habilitado" (click)="actualizarUser(usuario, 2)">
                                 Deshabilitar
-                            </button>
+                            </button>                            
+                        </div>
+                        <div *ngIf="usuario.perfil == 'Paciente' && usuario.historial">
+                            <button class="btn-historial" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="VerHistorialPaciente(usuario, $event)">
+                            HISTORIAL
+                          </button>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div *ngIf="!createrUserMenu" class="acciones-container">
+    <div *ngIf="!crearMenuUsuario" class="acciones-container">
         <h3 style="text-align: center;">ACCIONES</h3>
-
-        <button class="btn-accion" *ngIf="!createrUserMenu" (click)="mostrarMenuUsuarios()">
+        <button class="btn-accion" *ngIf="!crearMenuUsuario" (click)="mostrarMenuUsuarios()">
             <img src="../../../../assets/iconos/add.png" class="btn-imagen" alt="Icono">
             <span>REGISTRAR USUARIO</span>
         </button>
-
-        <button class="btn-accion" *ngIf="!createrUserMenu" (click)="descargarExcel()">
+        <button class="btn-accion" *ngIf="!crearMenuUsuario" (click)="descargarExcel()">
             <img src="../../../../assets/iconos/excel.png" class="btn-imagen" alt="Icono">
             <span>DESCARGAR EXCEL</span>
         </button>
-
         <button class="btn-accion" (click)="volver()">
             <img src="../../../../assets/iconos/volver.png" class="btn-imagen" alt="Icono">
             <span>VOLVER</span>
@@ -63,8 +65,7 @@
     </div>
 </div>
 
-
-<div class="opcion-registros" *ngIf="!formPaciente && !formEspecialista && !formAdministrador && createrUserMenu">
+<div class="opcion-registros" *ngIf="!formPaciente && !formEspecialista && !formAdministrador && crearMenuUsuario">
     <button class="btn" (click)="mostrarFormPaciente()">
         <img src="../../../../assets/iconos/usuario.png" alt="Paciente" />
         <h2>Paciente</h2>
@@ -91,4 +92,68 @@
 </div>
 <div class="registro-especialista" *ngIf="formAdministrador">
     <app-alta-admin></app-alta-admin>
+</div>
+
+<div class="modal fade modal-xl" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #F1FAEE; color: #000000;">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                    HISTORIAL CLÍNICO
+                </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div *ngFor="let historial of historialActivo" class="carta-historial">
+                    <h3 style="background-color: grey;">{{ historial?.fecha | diaFormateado }}</h3>
+                    <hr />
+                    <p>
+                        <span>Paciente</span>: {{ historial.paciente.apellido }},
+                        {{ historial.paciente.nombre }}
+                    </p>
+                    <p><span>Especialidad</span>: {{ historial.especialidad }}</p>
+                    <p>
+                        <span>Especialista</span>: {{ historial.especialista.apellido }},
+                        {{ historial.especialista.nombre }}
+                    </p>
+                    <p><span>Detalles</span></p>
+                    <div class="row justify-content-around">
+                        <div class="col-4">
+                            <p>Altura: {{ historial?.detalle?.altura }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p>Peso: {{ historial?.detalle?.peso }}</p>
+                        </div>
+                    </div>
+                    <div class="row justify-content-around">
+                        <div class="col-4">
+                            <p>Temperatura: {{ historial?.detalle?.temperatura }}</p>
+                        </div>
+                        <div class="col-4">
+                            <p>Presión: {{ historial?.detalle?.presion }}</p>
+                        </div>
+                    </div>
+                    <p><span>Información adicional</span></p>
+                    <div class="row justify-content-between">
+                        <div class="col-3">
+                            <p *ngIf="historial?.detalleAdicional?.clave1">
+                                {{ historial?.detalleAdicional?.clave1 }}: {{ historial?.detalleAdicional?.valor1 }}
+                            </p>
+                        </div>
+                        <div class="col-3">
+                            <p *ngIf="historial?.detalleAdicional?.clave2">
+                                {{ historial?.detalleAdicional?.clave2 }}: {{ historial?.detalleAdicional?.valor2 }}
+                            </p>
+                        </div>
+                        <div class="col-3">
+                            <p *ngIf="historial?.detalleAdicional?.clave3">
+                                {{ historial?.detalleAdicional?.clave3 }}: {{ historial?.detalleAdicional?.valor3 }}
+                            </p>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

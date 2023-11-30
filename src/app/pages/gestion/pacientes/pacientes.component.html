@@ -1,0 +1,77 @@
+<div class="heart" *ngIf="loading">
+  <div></div>
+</div>
+
+<div class="pacientes-container">
+  <div class="perfil">
+    <h3>MIS PACIENTES</h3>
+    <div class="row contenedor-cartas" *ngIf="hayPacientesAtendidos">
+      <div class="carta-especialista btn-fav" data-bs-toggle="modal" data-bs-target="#exampleModal"
+        *ngFor="let pac of pacientesAtendidos">
+        <div (click)="verHistorialPaciente(pac)">
+          <img src="{{ pac.fotos[0] }}" alt="imagen" />
+          <p>{{ pac.nombre }} {{ pac.apellido }}</p>
+          <div style="text-align: center;color: #fff;font-size: 1rem;font-weight: bold;text-shadow: 1px 1px #000;">
+          </div>
+        </div>
+      </div>
+    </div>
+      <h4 *ngIf="!hayPacientesAtendidos" style="font-size: 3rem; text-align: center">
+        Aun no se han atendido pacientes.
+      </h4>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="background-color: #7dc9f6; color: #000000;">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          HISTORIAL CLÍNICO
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let historial of historialActivo" class="carta-historial">
+          <h3 style="background-color: #5e9bbc;">{{ historial?.fecha | diaFormateado }}</h3>
+          <hr />
+          <p>
+            <span>Paciente: </span>{{ historial.paciente.apellido }},
+            {{ historial.paciente.nombre }}
+          </p>
+          <p><span>Especialidad: </span>{{ historial.especialidad }}</p>
+          <p>
+            <span>Especialista: </span>{{ historial.especialista.apellido }},
+            {{ historial.especialista.nombre }}
+          </p>
+          <p><span>Detalle: </span></p>
+          <p>Altura: {{ historial.detalle.altura }}</p>
+          <p>Peso: {{ historial.detalle.peso }}</p>
+          <p>Temperatura: {{ historial.detalle.temperatura }}</p>
+          <p>Presión: {{ historial.detalle.presion }}</p>
+          <p><span>Detalles adicionales: </span></p>
+          <p *ngIf="historial.detalleAdicional?.clave1">
+            {{ historial.detalleAdicional?.clave1 }}:
+            {{ historial.detalleAdicional?.valor1 }}
+          </p>
+          <p *ngIf="historial.detalleAdicional?.clave2">
+            {{ historial.detalleAdicional?.clave2 }}:
+            {{ historial.detalleAdicional?.valor2 }}
+          </p>
+          <p *ngIf="historial.detalleAdicional?.clave3">
+            {{ historial.detalleAdicional?.clave3 }}:
+            {{ historial.detalleAdicional?.valor3 }}
+          </p>
+          <hr />
+        </div>
+        <h1 style="color: rgb(0, 0, 0);">TURNOS DEL PACIENTE</h1>
+        <div *ngFor="let turno of turnosActivos" class="carta-historial">
+          <h5 style="color: #000000">Fecha: {{turno.fecha | diaFormateado}}</h5>
+          <h5 style="color: #000000">Estado: {{turno.estado}}</h5>
+          <h5 style="color: #000000">Reseña: {{turno.comentarioPaciente}}</h5>
+          <hr>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

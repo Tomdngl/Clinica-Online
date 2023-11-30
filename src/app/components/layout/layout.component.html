@@ -8,26 +8,30 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" routerLinkActive="active" routerLinkActive="router-link-active"
-              [routerLink]="['/home']">Inicio</a>
+            <a class="nav-link active" aria-current="page" routerLinkActive="active" routerLinkActive="router-link-active" [routerLink]="['/home']" appLayoutFocus>
+                Inicio</a>
           </li>
           <li class="nav-item"  *ngIf="authService.seLogueo">
-            <a class="nav-link" aria-current="page" [routerLink]="['/gestion/mi-perfil']">
+            <a class="nav-link" aria-current="page" [routerLink]="['/gestion/mi-perfil']" appLayoutFocus>
                 Mi perfil</a>
           </li>
           <li class="nav-item"  *ngIf="authService.seLogueo">
-            <a class="nav-link" aria-current="page" [routerLink]="['/gestion/mis-turnos']">
+            <a class="nav-link" aria-current="page" [routerLink]="['/gestion/mis-turnos']" appLayoutFocus>
                 Mis turnos</a>
           </li>
           <li class="nav-item"  *ngIf="authService.seLogueo">
-            <a class="nav-link" aria-current="page" [routerLink]="['/gestion/solicitar-turno']">
+            <a class="nav-link" aria-current="page" [routerLink]="['/gestion/solicitar-turno']" appLayoutFocus>
                 Solicitar turno</a>
           </li>
+          <li class="nav-item dropdown-center"  *ngIf="usuario?.perfil == 'Especialista' && authService.seLogueo">
+            <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false" [routerLink]="['/gestion/pacientes']" appLayoutFocus>
+              Pacientes</a>
+          </li>
           <li class="nav-item dropdown-center"  *ngIf="usuario?.perfil == 'Admin' && authService.seLogueo">
-            <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false" [routerLink]="['/home/seccion-usuarios']">
+            <a class="nav-link" role="button" data-bs-toggle="dropdown" aria-expanded="false" [routerLink]="['/home/seccion-usuarios']" appLayoutFocus>
               Usuarios</a>
           </li>
-          <li class="nav-item"  *ngIf="usuario?.perfil == 'Admin' && authService.seLogueo">
+          <li class="nav-item"  *ngIf="usuario?.perfil == 'Admin' && authService.seLogueo" appLayoutFocus>
             <a class="nav-link" aria-current="page" [routerLink]="['/gestion/turnos']">
                 Turnos</a>
           </li>

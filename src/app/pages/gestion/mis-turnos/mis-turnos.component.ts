@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AutenticacionService } from 'src/app/services/autenticacion.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -46,8 +46,14 @@ export class MisTurnosComponent {
   confirmacionFinalizacion: boolean = false;
   comentarioFinalizacion: string = '';
   turnoAFinalizar: any = {};
-
   turnoFinalizado: any = {};
+
+  formHistorial: FormGroup;
+  cantidadClaveValor: number = 0;
+  arrayClaveValorAdicionales: any[] = [];
+  dato1: string[] = ['', ''];
+  dato2: string[] = ['', ''];
+  dato3: string[] = ['', ''];
 
   palabraBusqueda: string = '';
   turnosFiltrados: any[] = [];
@@ -57,7 +63,14 @@ export class MisTurnosComponent {
     private notificationService:ToastService,
     private formBuilder:FormBuilder,
     private firestoreService:FirestoreService
-  ) {}
+  ) {
+    this.formHistorial = this.formBuilder.group({
+      altura: ['', [Validators.required]],
+      peso: ['', [Validators.required]],
+      temperatura: ['', [Validators.required]],
+      presion: ['', [Validators.required]],
+    });
+  }
 
   ngOnInit(): void {
     this.loading = true
@@ -72,13 +85,13 @@ export class MisTurnosComponent {
         else{
           this.esPaciente = true
         }
-        this.loadTurns(); // Cargar los turnos después de obtener el usuario logueado
+        this.cargarTurnos();
       }
       this.loading = false;
     })
   }
 
-  loadTurns() {
+  cargarTurnos() {
     this.firestoreService.ObtenerListadoTurnos().subscribe((turns: any) => {
       this.ListaDeTurnosActual = turns;
       this.listaDeTurnos = [];
@@ -413,6 +426,10 @@ export class MisTurnosComponent {
     }
   }
 
+  abrirFormHistorialClinico(turno: any) {
+    this.turnoFinalizado = { ...turno };
+  }
+
   transformarFechaParaBusqueda(value: any) {
     if (value.seconds) {
       value = new Date(value.seconds * 1000);
@@ -424,5 +441,87 @@ export class MisTurnosComponent {
       rtn = value.getFullYear() + '-' + (value.getMonth() + 1) + '-' + value.getDate();
     }
     return rtn;
+  }
+
+  crearHistorialClinico() {
+    if (this.formHistorial.valid) {
+      let detalle: any = {
+        altura: this.formHistorial.getRawValue().altura,
+        peso: this.formHistorial.getRawValue().peso,
+        temperatura: this.formHistorial.getRawValue().temperatura,
+        presion: this.formHistorial.getRawValue().presion,
+      };
+
+      let detalleAdicional: any = {};
+      if (this.arrayClaveValorAdicionales.length == 1) {
+        detalleAdicional.clave1 = this.dato1[0];
+        detalleAdicional.valor1 = this.dato1[1];
+      }
+      if (this.arrayClaveValorAdicionales.length == 2) {
+        detalleAdicional.clave1 = this.dato1[0];
+        detalleAdicional.valor1 = this.dato1[1];
+        detalleAdicional.clave2 = this.dato2[0];
+        detalleAdicional.valor2 = this.dato2[1];
+      }
+      if (this.arrayClaveValorAdicionales.length == 3) {
+        detalleAdicional.clave1 = this.dato1[0];
+        detalleAdicional.valor1 = this.dato1[1];
+        detalleAdicional.clave2 = this.dato2[0];
+        detalleAdicional.valor2 = this.dato2[1];
+        detalleAdicional.clave3 = this.dato3[0];
+        detalleAdicional.valor3 = this.dato3[1];
+      }
+
+      this.turnoFinalizado.detalle = detalle;
+      this.turnoFinalizado.detalleAdicional = detalleAdicional;
+      this.loading = true;
+      this.modificarTurnoFinalizado(this.turnoFinalizado);
+      this.firestoreService.createHistorialClinico(this.turnoFinalizado)
+        .then(() => {
+          this.loading = false;
+          this.dato1 = ['', ''];
+          this.dato2 = ['', ''];
+          this.dato3 = ['', ''];
+          this.arrayClaveValorAdicionales = [];
+          this.cantidadClaveValor = 0;
+          this.formHistorial.reset();
+          this.notificationService.showSuccess(
+            'Historial clínico creado',
+            'Mis Turnos'
+          );
+        })
+        .catch(() => {
+          this.loading = false;
+        });
+    }
+  }
+
+  modificarTurnoFinalizado(turno: any) {
+    turno.historial = true;
+    for (let i = 0; i < this.ListaDeTurnosActual.length; i++) {
+      const turnosEspecialista = this.ListaDeTurnosActual[i];
+      const index = turnosEspecialista.turnos.findIndex((t: any) => {
+        return (
+          new Date(t.fecha.seconds * 1000).getTime() ==
+          new Date(turno.fecha.seconds * 1000).getTime() &&
+          t.especialidad == turno.especialidad
+        );
+      });
+      turnosEspecialista.turnos[index] = turno;
+      this.firestoreService.ActualizarListadoTurnos(turnosEspecialista);
+    }
+  }
+
+  agregarClaveValor() {
+    if (this.cantidadClaveValor < 3) {
+      this.cantidadClaveValor++;
+      if (this.cantidadClaveValor == 1) {
+        this.arrayClaveValorAdicionales.push(this.dato1);
+      } else if (this.cantidadClaveValor == 2) {
+        this.arrayClaveValorAdicionales.push(this.dato2);
+      } else {
+        this.arrayClaveValorAdicionales.push(this.dato3);
+      }
+    }
   }
 }

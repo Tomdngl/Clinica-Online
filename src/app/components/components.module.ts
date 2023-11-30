@@ -10,6 +10,12 @@ import { GestorEspecialidadesComponent } from './gestor-especialidades/gestor-es
 import { InicioRapidoComponent } from './inicio-rapido/inicio-rapido.component';
 import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 import { AltaAdminComponent } from './alta-admin/alta-admin.component';
+import { DiaFormateadoPipe } from '../pipes/dia-formateado.pipe';
+import { DiaTurnoPipe } from '../pipes/dia-turno.pipe';
+import { DniFormateadoPipe } from '../pipes/dni-formateado.pipe';
+import { CartasPacientesAdminDirective } from '../directivas/cartas-pacientes-admin.directive';
+import { LayoutFocusDirective } from '../directivas/layout-focus.directive';
+import { ResaltarHoverDirective } from '../directivas/resaltar-hover.directive';
 
 
 @NgModule({
@@ -19,7 +25,13 @@ import { AltaAdminComponent } from './alta-admin/alta-admin.component';
     AltaEspecialistaComponent,
     GestorEspecialidadesComponent,
     InicioRapidoComponent,
-    AltaAdminComponent
+    AltaAdminComponent,
+    DiaFormateadoPipe,
+    DiaTurnoPipe,
+    DniFormateadoPipe,
+    CartasPacientesAdminDirective,
+    LayoutFocusDirective,
+    ResaltarHoverDirective
   ],
   imports: [
     RecaptchaModule,
@@ -35,7 +47,13 @@ import { AltaAdminComponent } from './alta-admin/alta-admin.component';
     AltaUsuarioComponent,
     AltaAdminComponent,
     GestorEspecialidadesComponent,
-    InicioRapidoComponent
+    InicioRapidoComponent,
+    DiaFormateadoPipe,
+    DiaTurnoPipe,
+    DniFormateadoPipe,
+    CartasPacientesAdminDirective,
+    LayoutFocusDirective,
+    ResaltarHoverDirective
   ]
 })
 export class ComponentsModule { }

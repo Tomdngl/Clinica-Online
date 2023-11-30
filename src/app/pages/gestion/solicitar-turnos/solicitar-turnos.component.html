@@ -11,7 +11,7 @@
             <h3>PACIENTES</h3>
             <div class="row" style="overflow-x: scroll">
                 <div class="col carta-especialista mb-2" *ngFor="let pac of arrayPacientes"
-                    (click)="MostrarPaciente(pac)">
+                    (click)="MostrarPaciente(pac)" appCartasPacientesAdmin>
                     <p>{{ pac.nombre }} {{ pac.apellido }}</p>
                     <img [src]="pac?.fotos[0]"
                         style="width: 10rem; height: 10rem; display: flex; justify-content: center; border-radius: 50%;">
@@ -53,7 +53,7 @@
                 </div>
                 <div class="col turnos-desk" style="overflow-y: scroll; height: 35rem">
                     <button class="btn btn-turnos"
-                        style=" text-transform: uppercase; margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.5rem; width: 150px;height: 150px;"
+                        style=" text-transform: uppercase; margin-left: 0.5rem; margin-right: 0.5rem; margin-bottom: 0.5rem; width: 100px;height: 100px;"
                         *ngFor="let turno of turnosAMostrar" (click)="SeleccionarTurno(turno)">
                         <p style="font-size: 15px;">{{ turno.fecha | diaTurno}}</p>
                     </button>

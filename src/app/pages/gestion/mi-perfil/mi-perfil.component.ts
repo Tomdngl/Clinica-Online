@@ -3,6 +3,8 @@ import { AutenticacionService } from 'src/app/services/autenticacion.service';
 import { FirestoreService } from 'src/app/services/firestore.service';
 import { SwalService } from 'src/app/services/swal.service';
 import { ToastService } from 'src/app/services/toast.service';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -28,7 +30,15 @@ export class MiPerfilComponent {
   sabado: boolean = false;
   duracionTurno: number = 30;
 
+  historialClinico: any[] = [];
+  historialClinicoFiltrado: any[] = [];
+  tieneHistorial: boolean = false;
+  tieneHistorialFiltrado: boolean = true;
+  palabraBusqueda: any;
+  turnosFiltrados: any;
+  turnosDelEspecialista: any[] = [];
   turnosActuales: any = {};
+  fechaActual: Date = new Date();
 
   constructor(public authService:AutenticacionService,
     private swal:SwalService,
@@ -44,6 +54,10 @@ export class MiPerfilComponent {
         if(this.authService.esPaciente)
         {
           this.esPaciente = true;
+          this.firestoreService.getHistorialesClinicos().subscribe((historial) => {
+          this.historialClinico = historial.filter((h) => h.paciente.id == this.usuario.id);
+          this.tieneHistorial = this.historialClinico.length > 0;
+          });
         }
         if(this.authService.esAdmin)
         {
@@ -78,20 +92,20 @@ export class MiPerfilComponent {
         !this?.usuario?.especialidad[1]?.diasTurnos?.some((d: any) => d == day)
       ) {
         this.diasEspecialista.push(day);
-        this.notificationService.showInfo('Se ha asignado un Día', 'MI PERFIL');
+        this.notificationService.showInfo('Se ha asignado un día', 'Perfil');
         this.activateDeactivarBoton(day);
       } else if (this.diasEspecialista.some((d) => d == day)) {
         const index = this.diasEspecialista.indexOf(day);
         this.diasEspecialista.splice(index, 1);
         this.notificationService.showInfo(
           'Se cancelo la asignación del día',
-          'MI PERFIL'
+          'Perfil'
         );
         this.activateDeactivarBoton(day);
       } else {
         this.notificationService.showWarning(
           'Este día ya esta asignado para otra especialidad',
-          'MI PERFIL'
+          'Perfil'
         );
       }
     } else if (this.especialidad2) {
@@ -100,20 +114,20 @@ export class MiPerfilComponent {
         !this.usuario.especialidad[0].diasTurnos.some((d: any) => d == day)
       ) {
         this.diasEspecialista.push(day);
-        this.notificationService.showInfo('Se ha asignado un Día', 'MI PERFIL');
+        this.notificationService.showInfo('Se ha asignado un Día', 'Perfil');
         this.activateDeactivarBoton(day);
       } else if (this.diasEspecialista.some((d) => d == day)) {
         const index = this.diasEspecialista.indexOf(day);
         this.diasEspecialista.splice(index, 1);
         this.notificationService.showInfo(
           'Se cancelo la asignación del día',
-          'MI PERFIL'
+          'Perfil'
         );
         this.activateDeactivarBoton(day);
       } else {
         this.notificationService.showWarning(
           'Este día ya esta asignado para otra especialidad',
-          'MI PERFIL'
+          'Perfil'
         );
       }
     }
@@ -337,5 +351,132 @@ export class MiPerfilComponent {
       this.diasEspecialista = [...this.usuario?.especialidad[1].diasTurnos];
       this.activarBoton();
     }
+  }
+
+  verHistorialClinico() {
+    this.historialClinicoFiltrado = [...this.historialClinico];
+  }
+
+  filtrarPorCamposEspecialista() {
+    this.turnosFiltrados = [];
+    if (this.palabraBusqueda == '') {
+      this.turnosFiltrados = [...this.turnosDelEspecialista];
+    } else {
+      const busqueda = this.palabraBusqueda.trim().toLocaleLowerCase();
+      for (let i = 0; i < this.turnosDelEspecialista.length; i++) {
+        const turno = this.turnosDelEspecialista[i];
+        const fechaBusqueda = this.transformarFechaParaBusqueda(turno.fecha);
+        if (
+          turno.especialista.nombre.toLocaleLowerCase().includes(busqueda) ||
+          turno.especialista.apellido.toLocaleLowerCase().includes(busqueda) ||
+          turno.especialidad.toLocaleLowerCase().includes(busqueda) ||
+          turno.estado.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.nombre.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.apellido.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.obraSocial.toLocaleLowerCase().includes(busqueda) ||
+          fechaBusqueda.includes(busqueda) ||
+          turno?.detalle?.altura?.toString().includes(busqueda) ||
+          turno?.detalle?.peso?.toString().includes(busqueda) ||
+          turno?.detalle?.temperatura?.toString().includes(busqueda) ||
+          turno?.detalle?.presion?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave1?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave2?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave3?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor1?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor2?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor3?.includes(busqueda)
+        ) {
+          this.turnosFiltrados.push(turno);
+        }
+      }
+    }
+  }
+
+  transformarFechaParaBusqueda(value: any) {
+    if (value.seconds) {
+      value = new Date(value.seconds * 1000);
+    }
+    let rtn =
+      value.getFullYear() +
+      '-' +
+      (value.getMonth() + 1) +
+      '-' +
+      value.getDate();
+    if (parseInt(rtn.split('-')[2]) < 10 && parseInt(rtn.split('-')[2]) > 0) {
+      rtn =
+        value.getFullYear() +
+        '-' +
+        (value.getMonth() + 1) +
+        '-0' +
+        value.getDate();
+    } else {
+      rtn =
+        value.getFullYear() +
+        '-' +
+        (value.getMonth() + 1) +
+        '-' +
+        value.getDate();
+    }
+    return rtn;
+  }
+
+  filtrarHistorialClinico(nombreEspecialista: string) {
+    this.historialClinicoFiltrado = [];
+    const nombreLower = nombreEspecialista.toLowerCase();
+
+    if (nombreEspecialista === '') {
+      this.historialClinicoFiltrado = [...this.historialClinico];
+    } else {
+      for (let i = 0; i < this.historialClinico.length; i++) {
+        const historial = this.historialClinico[i];
+        const especialistaNombreLower = historial.especialista.nombre.toLowerCase();
+        const especialistaApellidoLower = historial.especialista.apellido.toLowerCase();
+        const nombreCompletoLower = especialistaNombreLower + ' ' + especialistaApellidoLower;
+
+        if (nombreCompletoLower.includes(nombreLower)) {
+          this.historialClinicoFiltrado.push(historial);
+        }
+      }
+    }
+
+    if (this.historialClinicoFiltrado.length === 0) {
+      this.tieneHistorialFiltrado = false;
+    } else {
+      this.tieneHistorialFiltrado = true;
+    }
+  }
+
+  crearPDF() {
+    const DATA = document.getElementById('pdf');
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const options = {
+      background: 'white',
+      scale: 2,
+    };
+    //@ts-ignore
+    html2canvas(DATA, options)
+      .then((canvas: any) => {
+        const img = canvas.toDataURL('image/PNG');
+
+        const bufferX = 30;
+        const bufferY = 30;
+        const imgProps = (doc as any).getImageProperties(img);
+        const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        doc.addImage(
+          img,
+          'PNG',
+          bufferX,
+          bufferY,
+          pdfWidth,
+          pdfHeight,
+          undefined,
+          'FAST'
+        );
+        return doc;
+      })
+      .then((docResult: any) => {
+        docResult.save(`historial-clinico-${this.usuario.nombre}.pdf`);
+      });
   }
 }

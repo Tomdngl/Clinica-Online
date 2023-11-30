@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { SeccionUsuariosComponent } from './seccion-usuarios/seccion-usuarios.component';
 import { ComponentsModule } from 'src/app/components/components.module';
 
-
 @NgModule({
   declarations: [
     HomeComponent,
